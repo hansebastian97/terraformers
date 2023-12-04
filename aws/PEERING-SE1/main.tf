@@ -1,27 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.16"
-    }
-  }
-
-  backend "s3" {
-    bucket = "mybucket"
-    key    = "aws/01. VPC_PEERING_LAB/PEERING-SE1"
-    region = "ap-southeast-1"
-  }
-
-  required_version = ">= 1.2.0"
-}
-
-provider "aws" {
-  region = var.region
-  assume_role {
-    role_arn = var.role
-  }
-}
-
 # Create VPC
 resource "aws_vpc" "PEERING-SE1-VPC1" {
   cidr_block       = "10.2.0.0/16"
@@ -34,8 +10,6 @@ resource "aws_vpc" "PEERING-SE1-VPC1" {
 
 # Create Internet Gateway
 resource "aws_internet_gateway" "PEERING-SE1-IG1" {
-  vpc_id = aws_vpc.PEERING-SE1-VPC1.id
-
   tags = {
     Name = "PEERING-SE1-IG1"
   }
@@ -49,7 +23,7 @@ resource "aws_internet_gateway_attachment" "PEERING-SE1-VPC1_Attachment" {
 
 # Create Security Group
 resource "aws_security_group" "PEERING-SE1-SG1" {
-  name   = "sg"
+  name   = "PEERING-SE1-SG1"
   vpc_id = aws_vpc.PEERING-SE1-VPC1.id
 
   # Allow HTTP Ingress Rule
@@ -64,8 +38,8 @@ resource "aws_security_group" "PEERING-SE1-SG1" {
   # Allow SSH Ingress Rule
   ingress {
     description = "Ingress SSH"
-    from_port   = 20
-    to_port     = 20
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -77,6 +51,14 @@ resource "aws_security_group" "PEERING-SE1-SG1" {
     to_port     = -1
     protocol    = "icmp"
     cidr_blocks = ["10.1.0.0/16"]
+  }
+
+  egress {
+    description = "Egress all"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
@@ -113,23 +95,19 @@ resource "aws_route_table_association" "PEERING-SE1-route-public1-association" {
 resource "aws_instance" "PEERING-SE1-EC2-1" {
   ami                    = var.ami_id
   instance_type          = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.PEERING-SE1-SG1]
+  vpc_security_group_ids = [aws_security_group.PEERING-SE1-SG1.id]
   subnet_id              = aws_subnet.PEERING-SE1-subnet-private1.id
   tags = {
     Name = "PEERING-SE1-EC2-1"
   }
-  user_data = <<-EOF
-                #!/bin/bash
-                yum update -y
-                yum install -y httpd
-                service httpd start
-                chkconfig httpd on
-                echo "<html><head><title>Successful connection!</title></head><body><h1 style='color: blue;'>Successful connection!</h1></body></html>" > /var/www/html/index.html
-              EOF
+  user_data = <<EOF
+#!/bin/bash
+yum update -y
+yum install -y httpd
+service httpd start
+chkconfig httpd on
+echo "<html><head><title>Successful connection!</title></head><body><h1 style='color: blue;'>Successful connection!</h1></body></html>" > /var/www/html/index.html
+EOF
 }
 
 
-output "instance_ip_addr" {
-  description = "The public IP address of the EC2 instance"
-  value       = aws_instance.PEERING-SE1-EC2-1.public_ip
-}

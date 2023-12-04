@@ -1,5 +1,5 @@
 variable "region" {
-  type    = string // Declare tipenya
+  type    = string
   default = "ap-southeast-2"
 }
 
