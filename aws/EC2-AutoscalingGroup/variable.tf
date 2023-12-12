@@ -7,3 +7,4 @@ variable "role" {
   type    = string
   default = "arn:aws:iam::084825817586:role/EC2_FullAccess"
 }
+

@@ -2,7 +2,6 @@
 resource "aws_vpc" "Custom-VPC" {
   cidr_block       = var.cidr_block
   instance_tenancy = "default"
-
   tags = {
     Name = var.vpc_name
   }
@@ -92,10 +91,10 @@ resource "aws_route_table" "Custom-VPC-route-public1" {
 #   route_table_id = aws_route_table.Custom-VPC-route-public1.id
 # }
 
-# resource "aws_route_table_association" "PEERING-SE2-route-public1-association" {
-
-#   subnet_id      = aws_subnet.public_subnets[name].id
-#   route_table_id = aws_route_table.PEERING-SE2-route-public1.id
-# }
+resource "aws_route_table_association" "Custom-VPC-route-public1-association" {
+  for_each = local.public_subnets
+  subnet_id      = aws_subnet.Custom-VPC-subnet[each.value].id
+  route_table_id = aws_route_table.Custom-VPC-route-public1.id
+}
 
 # public_subnets = {for }

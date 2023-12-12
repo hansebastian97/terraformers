@@ -1,3 +1,4 @@
+# Module Variable
 variable "vpc_name" {
     type = string
 }
@@ -13,4 +14,9 @@ variable "subnet" {
     availability_zone    = string
     type                 = string
   }))
+}
+
+locals {
+  public_subnets = toset([for key, value in var.subnet : value.name if value.type == "public"
+  ])
 }
