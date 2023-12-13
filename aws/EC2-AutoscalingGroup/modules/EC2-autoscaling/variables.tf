@@ -2,10 +2,10 @@ variable "vpc_name"{
     type = string
 }
 
-variable "availability_zone" {
+variable "launch_template_availability_zone" {
     type = string
 }
 
-variable "security_group" {
+variable "launch_template_security_group" {
     type = string
 }

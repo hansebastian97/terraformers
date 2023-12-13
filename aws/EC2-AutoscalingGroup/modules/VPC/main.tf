@@ -62,7 +62,7 @@ resource "aws_security_group" "Custom-VPC-SG1" {
 
 # Create Subnet
 resource "aws_subnet" "Custom-VPC-subnet" {
-  for_each = var.subnet
+  for_each = toset(var.subnet)
 
   vpc_id            = aws_vpc.Custom-VPC.id
   cidr_block        = each.value.subnet_cidr

@@ -7,8 +7,17 @@ variable "cidr_block" {
     type = string
 }
 
+# variable "subnet" {
+#   type = map(object({
+#     name                 = string
+#     subnet_cidr          = string
+#     availability_zone    = string
+#     type                 = string
+#   }))
+# }
+
 variable "subnet" {
-  type = map(object({
+  type = list(object({
     name                 = string
     subnet_cidr          = string
     availability_zone    = string
@@ -17,6 +26,6 @@ variable "subnet" {
 }
 
 locals {
-  public_subnets = toset([for key, value in var.subnet : value.name if value.type == "public"
+  public_subnets = toset([for value in var.subnet : value.name if value.type == "public"
   ])
 }

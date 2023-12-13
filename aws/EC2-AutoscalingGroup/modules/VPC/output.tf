@@ -19,10 +19,9 @@ output "security_group_id" {
 
 output "subnet" {
   value   = aws_subnet.Custom-VPC-subnet
-  sensitive = true
 }
 
 output "public_subnets" {
-  value = local.public_subnets
-  sensitive = true
+  value = tolist(local.public_subnets)
+  sensitive = false
 }

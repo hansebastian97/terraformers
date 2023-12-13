@@ -10,7 +10,7 @@ resource "aws_launch_template" "foo" {
     enabled = true
   }
 
-  vpc_security_group_ids = [var.security_group]
+  vpc_security_group_ids = [var.launch_template_security_group]
 
   tag_specifications {
     resource_type = "instance"
@@ -20,5 +20,5 @@ resource "aws_launch_template" "foo" {
     }
   }
 
-  user_data = base64encode(templatefile("${path.module}/data/user-data.sh", {availability_zone = var.availability_zone}))
+  user_data = base64encode(templatefile("${path.module}/data/user-data.sh", {availability_zone = var.launch_template_availability_zone}))
 }

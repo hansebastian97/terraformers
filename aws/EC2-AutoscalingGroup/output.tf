@@ -3,10 +3,10 @@
 #   value       = module.vpc.resource_name
 # }
 
-# output "vpc_public_subnets" {
-#   description = "IDs of the VPC's public subnets"
-#   value       = module.vpc.subnet
-# }
+output "vpc_public_subnets" {
+  description = "IDs of the VPC's public subnets"
+  value       = module.vpc-singapore.public_subnets
+}
 
 # output "ami" {
 #   description = "AMI"
