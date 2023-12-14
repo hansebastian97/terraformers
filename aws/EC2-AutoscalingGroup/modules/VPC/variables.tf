@@ -10,7 +10,7 @@ variable "cidr_block" {
 
 
 variable "subnet" {
-  type = list(object({
+  type = map(object({
     name                 = string
     subnet_cidr          = string
     availability_zone    = string
@@ -20,10 +20,11 @@ variable "subnet" {
 
 variable "load_balancer_az" {
   type = list(string)
-  default = ["subnet-public1", "subnet-public2"]
+  default = ["subnet-public1", "subnet-private1"]
 }
 
+
+
 locals {
-  public_subnets = toset([for value in var.subnet : value.name if value.type == "public"])
-  test_az_subnet = [for az in var.load_balancer_az : lookup(var.subnet, az, null)]
+  public_subnets = [{for key, value in var.subnet : key => value if value.type == "public"}]
 }

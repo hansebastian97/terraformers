@@ -17,16 +17,42 @@ output "security_group_id" {
   sensitive = true
 }
 
+# output "subnet" {
+#   description = "IDs of the VPC's public subnets"
+#   value       = [ for key, value in aws_subnet.Custom-VPC-subnet : {
+#       "key" : key,
+#       "value": value.id
+#     }
+#   ]
+# }
+
 output "subnet" {
-  value   = aws_subnet.Custom-VPC-subnet
+  description = "IDs of the VPC's public subnets"
+  value       = { for key, value in aws_subnet.Custom-VPC-subnet : key =>  {
+      "id": value.id
+    }
+  }
 }
+# var.load_balancer_az
+# output "subnet2" {
+#   description = "IDs of the VPC's public subnets"
+#   value       = {for key, value in aws_subnet.Custom-VPC-subnet: key => 
+#     [for subnet_name in var.load_balancer_az :value.id if key ==subnet_name]
+    
+#   }
+# }
+
+# output "subnet2" {
+#   description = "IDs of the VPC's public subnets"
+#   value       = [for subnet_name in var.load_balancer_az :
+#     [for key, value in aws_subnet.Custom-VPC-subnet:  value.id if key == subnet_name]
+#   ]
+# }
+
+
+
 
 output "public_subnets" {
   value = tolist(local.public_subnets)
-  sensitive = false
-}
-
-output "test_az_subnet" {
-  value = local.test_az_subnet
   sensitive = false
 }

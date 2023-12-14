@@ -6,26 +6,26 @@ module "vpc-singapore" {
 
   vpc_name   = "CDN-VPC1"
   cidr_block = "10.3.0.0/16"
-  subnet = [
-    {
+  subnet = {
+    subnet-public1 = {
       name              = "subnet-public1"
       subnet_cidr       = "10.3.16.0/20"
       availability_zone = "ap-southeast-1a"
       type              = "public"
     },
-    {
+    subnet-private1 = {
       name              = "subnet-private1"
       subnet_cidr       = "10.3.32.0/20"
       availability_zone = "ap-southeast-1b"
       type              = "private"
     },
-    {
+    subnet-public2 = {
       name              = "subnet-public2"
       subnet_cidr       = "10.3.48.0/20"
       availability_zone = "ap-southeast-1c"
       type              = "public"
     }
-  ]
+  }
 
 }
 
@@ -56,6 +56,10 @@ module "vpc-singapore" {
 # }
 
 module "EC2-autoscaling" {
+  # Initial
+  # subnet = module.vpc-singapore.subnet
+
+
   vpc_name                          = module.vpc-singapore.vpc_name
   source                            = "./modules/EC2-autoscaling"
   launch_template_availability_zone = "ap-southeast-1a"

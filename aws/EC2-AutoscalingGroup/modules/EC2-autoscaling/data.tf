@@ -1,3 +1,4 @@
+# Data Source AMI Image
 data "aws_ami" "ubuntu-22-04" {
   most_recent      = true
   owners = ["amazon"]
