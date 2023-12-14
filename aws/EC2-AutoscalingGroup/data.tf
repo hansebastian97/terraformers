@@ -7,5 +7,5 @@ data "aws_kms_secrets" "credentials" {
 }
 
 locals {
-    credentials = yamldecode(data.aws_kms_secrets.credentials.plaintext["cred"])
+  credentials = yamldecode(data.aws_kms_secrets.credentials.plaintext["cred"])
 }

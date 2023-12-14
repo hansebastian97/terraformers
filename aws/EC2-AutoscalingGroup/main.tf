@@ -18,8 +18,15 @@ module "vpc-singapore" {
       subnet_cidr       = "10.3.32.0/20"
       availability_zone = "ap-southeast-1b"
       type              = "private"
+    },
+    {
+      name              = "subnet-public2"
+      subnet_cidr       = "10.3.48.0/20"
+      availability_zone = "ap-southeast-1c"
+      type              = "public"
     }
   ]
+
 }
 
 # module "vpc-sydney" {
@@ -49,10 +56,9 @@ module "vpc-singapore" {
 # }
 
 module "EC2-autoscaling" {
-  vpc_name          = module.vpc-singapore.vpc_name
-  source            = "./modules/EC2-autoscaling"
+  vpc_name                          = module.vpc-singapore.vpc_name
+  source                            = "./modules/EC2-autoscaling"
   launch_template_availability_zone = "ap-southeast-1a"
   launch_template_security_group    = module.vpc-singapore.security_group_id
-  
 
 }

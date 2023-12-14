@@ -62,7 +62,7 @@ resource "aws_security_group" "Custom-VPC-SG1" {
 
 # Create Subnet
 resource "aws_subnet" "Custom-VPC-subnet" {
-  for_each = toset(var.subnet)
+  for_each = {for subnet in var.subnet : subnet.name => subnet}
 
   vpc_id            = aws_vpc.Custom-VPC.id
   cidr_block        = each.value.subnet_cidr
@@ -86,15 +86,10 @@ resource "aws_route_table" "Custom-VPC-route-public1" {
   }
 }
 
-# resource "aws_route_table_association" "PEERING-SE2-route-public1-association" {
-#   subnet_id      = aws_subnet.Custom-VPC-subnet["subnet1"].id
+# resource "aws_route_table_association" "Custom-VPC-route-public1-association" {
+#   for_each = local.public_subnets
+#   subnet_id      = aws_subnet.Custom-VPC-subnet[each.value].id
 #   route_table_id = aws_route_table.Custom-VPC-route-public1.id
 # }
-
-resource "aws_route_table_association" "Custom-VPC-route-public1-association" {
-  for_each = local.public_subnets
-  subnet_id      = aws_subnet.Custom-VPC-subnet[each.value].id
-  route_table_id = aws_route_table.Custom-VPC-route-public1.id
-}
 
 # public_subnets = {for }

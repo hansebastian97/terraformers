@@ -1,4 +1,4 @@
-# Create EC2
+# Create Launch Template
 resource "aws_launch_template" "foo" {
   name = "${var.vpc_name}-launch-template"
   instance_type = "t2.micro"

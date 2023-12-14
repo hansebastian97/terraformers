@@ -25,3 +25,8 @@ output "public_subnets" {
   value = tolist(local.public_subnets)
   sensitive = false
 }
+
+output "test_az_subnet" {
+  value = local.test_az_subnet
+  sensitive = false
+}
