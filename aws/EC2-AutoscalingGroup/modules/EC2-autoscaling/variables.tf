@@ -1,27 +1,40 @@
+# Module Variable
 variable "vpc_name"{
     type = string
 }
 
+variable "security_group" {
+    type = string
+}
+
+# Launch Template Variable
 variable "launch_template_availability_zone" {
     type = string
 }
 
-variable "launch_template_security_group" {
-    type = string
+variable "vpc_id" {
+  type = string
+#   sensitive = true
 }
 
-variable "load_balancer_az" {
+
+# Autoscaling Group Variable
+variable "subnet_group" {
   type = list(string)
-  default = ["subnet-public1", "subnet-private1"]
 }
 
-# variable "subnet" {
-#   type = list(object{
+variable "subnet" {
+  type = map(object({
+    id = string
+  }))
+}
 
-#   })
-# }
 
 
-# locals {
-#   vpc_identifier = [for name in var.load_balancer_az : lookup(var.subnet[name], "name", null)]
-# }
+# Local Variable
+locals {
+  subnet_map =  tolist([
+    for key in var.subnet_group : 
+    var.subnet[key].id
+  ])
+}

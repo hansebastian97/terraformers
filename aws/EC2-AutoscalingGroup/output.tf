@@ -8,17 +8,22 @@
 #   value       = module.vpc-singapore.subnet
 # }
 
-output "subnet2" {
+# output "subnet2" {
+#   description = "IDs of the VPC's public subnets"
+#   value       = module.vpc-singapore.subnet
+# }
+
+
+
+output "local_az_subnet" {
   description = "IDs of the VPC's public subnets"
-  value       = module.vpc-singapore.subnet2
+  value       = module.EC2-autoscaling.az
 }
 
-
-
-# output "local_az_subnet" {
-#   description = "IDs of the VPC's public subnets"
-#   value       = module.vpc-singapore.test_az_subnet
-# }
+output "aws_lb_target_group" {
+  description = "IDs of the VPC's public subnets"
+  value       = module.EC2-autoscaling.aws_lb_target_group
+}
 
 # output "ami" {
 #   description = "AMI"

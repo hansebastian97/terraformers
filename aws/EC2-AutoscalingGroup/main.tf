@@ -56,13 +56,20 @@ module "vpc-singapore" {
 # }
 
 module "EC2-autoscaling" {
-  # Initial
-  # subnet = module.vpc-singapore.subnet
-
-
-  vpc_name                          = module.vpc-singapore.vpc_name
-  source                            = "./modules/EC2-autoscaling"
+  # Module Configuration
+  source   = "./modules/EC2-autoscaling"
+  subnet   = module.vpc-singapore.subnet
+  vpc_name = module.vpc-singapore.vpc_name
+  vpc_id   = module.vpc-singapore.vpc_id
+  security_group    = module.vpc-singapore.security_group_id
+  
+  # Launch Template Configuration
   launch_template_availability_zone = "ap-southeast-1a"
-  launch_template_security_group    = module.vpc-singapore.security_group_id
+  
+
+  # Autoscaling Group Configuration
+  subnet_group = ["subnet-public1", "subnet-private1"]
+
+  # Load Balancer Configuration
 
 }
