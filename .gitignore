@@ -2,3 +2,4 @@
 .terraform/
 **/credentials.yml.encrypted
 */terraform.tfstate.backup
+**/kms.txt

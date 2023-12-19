@@ -1,6 +1,0 @@
-# Windows
-aws kms encrypt \
-    --key-id mrk-c2bd3a063f784bc58d0d8b23b7facc77 \
-    --plaintext fileb://credentials.yml \
-    --output text \
-    --query CiphertextBlob > ./credentials.yml.encrypted
