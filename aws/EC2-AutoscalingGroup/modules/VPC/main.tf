@@ -5,6 +5,7 @@ resource "aws_vpc" "Custom-VPC" {
   tags = {
     Name = var.vpc_name
   }
+    depends_on = [ aws_internet_gateway.Custom-VPC-IG1 ]
 }
 
 # Create Internet Gateway
@@ -12,12 +13,14 @@ resource "aws_internet_gateway" "Custom-VPC-IG1" {
   tags = {
     Name = "${var.vpc_name}-IG1"
   }
+
 }
 
 # Create Internet Gateway Attachment
 resource "aws_internet_gateway_attachment" "Custom-VPC-IG1-Attachment" {
   internet_gateway_id = aws_internet_gateway.Custom-VPC-IG1.id
   vpc_id              = aws_vpc.Custom-VPC.id
+  depends_on = [  aws_vpc.Custom-VPC, aws_internet_gateway.Custom-VPC-IG1 ]
 }
 
 # Create Security Group
@@ -49,7 +52,7 @@ resource "aws_security_group" "Custom-VPC-SG1" {
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
-    cidr_blocks = ["10.2.0.0/16"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
     description = "Egress all"
@@ -71,6 +74,7 @@ resource "aws_subnet" "Custom-VPC-subnet" {
       Name = "${var.vpc_name}-${each.value.name}"
   }
   map_public_ip_on_launch = true
+  depends_on = [ aws_vpc.Custom-VPC ,aws_route_table.Custom-VPC-route-public1 ]
 }
 
 # Create Routing Table
@@ -84,12 +88,14 @@ resource "aws_route_table" "Custom-VPC-route-public1" {
   tags = {
     Name = "${var.vpc_name}-route-public1"
   }
+  depends_on = [ aws_vpc.Custom-VPC ]
 }
 
-# resource "aws_route_table_association" "Custom-VPC-route-public1-association" {
-#   for_each = local.public_subnets
-#   subnet_id      = aws_subnet.Custom-VPC-subnet[each.value].id
-#   route_table_id = aws_route_table.Custom-VPC-route-public1.id
-# }
 
-# public_subnets = {for }
+resource "aws_route_table_association" "Custom-VPC-route-table-association" {
+  for_each = local.public_subnet_map
+
+  subnet_id      = each.value.id
+  route_table_id = aws_route_table.Custom-VPC-route-public1.id
+  depends_on = [ aws_vpc.Custom-VPC ]
+}

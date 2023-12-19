@@ -1,31 +1,40 @@
 # output "vpc_resource_name" {
 #   description = "IDs of the VPC's public subnets"
-#   value       = module.vpc.resource_name
+#   value       = module.vpc-singapore.vpc_name
 # }
 
-# output "vpc_subnets" {
-#   description = "IDs of the VPC's public subnets"
-#   value       = module.vpc-singapore.subnet
-# }
-
-# output "subnet2" {
-#   description = "IDs of the VPC's public subnets"
-#   value       = module.vpc-singapore.subnet
-# }
-
-
-
-output "local_az_subnet" {
+output "public_subnet" {
   description = "IDs of the VPC's public subnets"
-  value       = module.EC2-autoscaling.az
+  value       = module.vpc-sydney.public-subnet-name
 }
 
-output "aws_lb_target_group" {
+output "public_subnet-map" {
   description = "IDs of the VPC's public subnets"
-  value       = module.EC2-autoscaling.aws_lb_target_group
+  value       = module.vpc-sydney.public-subnet-map
 }
 
-# output "ami" {
-#   description = "AMI"
-#   value = data.aws_ami.ubuntu-22-04.image_id
+# output "public_subnet" {
+#   description = "IDs of the VPC's public subnets"
+#   value       = module.vpc-singapore.public-subnet-name
+# }
+
+# output "public_subnet-map" {
+#   description = "IDs of the VPC's public subnets"
+#   value       = module.vpc-singapore.public-subnet-map
+# }
+
+
+# output "local_az_subnet" {
+#   description = "IDs of the VPC's public subnets"
+#   value       = module.EC2-autoscaling.az
+# }
+
+# output "aws_lb_target_group" {
+#   description = "IDs of the VPC's public subnets"
+#   value       = module.EC2-autoscaling.aws_lb_target_group
+# }
+
+# output "aws_autoscaling_group" {
+#   description = "IDs of the VPC's public subnets"
+#   value       = module.EC2-autoscaling.aws_autoscaling_group
 # }

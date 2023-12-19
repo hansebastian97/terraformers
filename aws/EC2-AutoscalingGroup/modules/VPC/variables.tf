@@ -7,8 +7,6 @@ variable "cidr_block" {
     type = string
 }
 
-
-
 variable "subnet" {
   type = map(object({
     name                 = string
@@ -23,8 +21,22 @@ variable "load_balancer_az" {
   default = ["subnet-public1", "subnet-private1"]
 }
 
-
+# variable "public-subnet" {
+#   type = map(object({
+#     id = string
+#   }))
+# }
 
 locals {
-  public_subnets = [{for key, value in var.subnet : key => value if value.type == "public"}]
+  public_subnet_name = [for key, value in var.subnet :  value.name if value.type == "public"]
+
+  # public_subnet_map =  tolist([
+  #   for key in local.public_subnet_name : 
+  #   aws_subnet.Custom-VPC-subnet[key].id
+  # ])
+
+  public_subnet_map =  {
+    for key in local.public_subnet_name : 
+    key => {"id": aws_subnet.Custom-VPC-subnet[key].id}
+  }
 }

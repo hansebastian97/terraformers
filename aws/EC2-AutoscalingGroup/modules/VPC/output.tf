@@ -2,19 +2,19 @@
 output "vpc_name" {
   description = "Resource name"
   value       = var.vpc_name
-  # sensitive = true
+  sensitive = true
 }
 
 output "vpc_id" {
   description = "VPC ID"
   value       = aws_vpc.Custom-VPC.id
-  # sensitive = true
+  sensitive = true
 }
 
 output "security_group_id" {
   description = "Security Group"
   value       = aws_security_group.Custom-VPC-SG1.id
-  # sensitive = true
+  sensitive = true
 }
 
 output "subnet" {
@@ -23,6 +23,16 @@ output "subnet" {
       "id": value.id
     }
   }
+}
+
+output "public-subnet-name" {
+  description = "Security Group"
+  value       = local.public_subnet_name
+}
+
+output "public-subnet-map" {
+  description = "Security Group"
+  value       = local.public_subnet_map
 }
 
 # var.load_balancer_az

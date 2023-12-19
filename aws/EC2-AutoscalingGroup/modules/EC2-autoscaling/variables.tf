@@ -17,7 +17,6 @@ variable "vpc_id" {
 #   sensitive = true
 }
 
-
 # Autoscaling Group Variable
 variable "subnet_group" {
   type = list(string)
@@ -29,11 +28,9 @@ variable "subnet" {
   }))
 }
 
-
-
 # Local Variable
 locals {
-  subnet_map =  tolist([
+  subnet_map =  ([
     for key in var.subnet_group : 
     var.subnet[key].id
   ])
