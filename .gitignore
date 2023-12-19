@@ -1,4 +1,4 @@
 */.terraform/*
 .terraform/
-*/credentials.yml.encrypted
+**/credentials.yml.encrypted
 */terraform.tfstate.backup
